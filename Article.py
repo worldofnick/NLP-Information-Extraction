@@ -6,9 +6,9 @@ class Article:
         self.id = text[0].split()[0]
 
         text.pop(0)
-        for i in range(0, len(text)):
-            text[i] = text[i].strip()
-
+        # for i in range(0, len(text)):
+        #     text[i] = text[i].strip()
+        #
         self.text = ' '.join(text)
-        date_index = self.text.index(self.TEXT_MARKER)
-        self.text = self.text[date_index + len(self.TEXT_MARKER) + 1:]
+        # date_index = self.text.index(self.TEXT_MARKER)
+        # self.text = self.text[date_index + len(self.TEXT_MARKER) + 1:]
