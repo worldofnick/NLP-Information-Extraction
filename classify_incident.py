@@ -17,7 +17,7 @@ bomb_dict = {'(?<=\s)bomb': 1, '(?<=\s)bombed rebel': 1, '(?<=\s)detonated': 5, 
 
 kidnap_dict = {'(?<=\s)kidnap': 3, '(?<=\s)abduct': 3, 'held\s+hostage': 3, 'hostage': 2, '(?<=\s)disappear': 1}
 
-robbery_dict = {'?<=\s)stole(?=\s)': 2, '(?<=\s)steal': 2, '(?<=\s)robbery(?=\s)': 4, '(?<=\s)robbed(?=\s)': 4,
+robbery_dict = {'(?<=\s)stole(?=\s)': 2, '(?<=\s)steal': 2, '(?<=\s)robbery(?=\s)': 4, '(?<=\s)robbed(?=\s)': 4,
 '(?<=\s)loot': 4, '(?<=\s)burglar': 3, '(?<=\s)burglary': 3, '(?<=\s)theif': 3, '(?<=\s)raider': 2, '(?<=\s)intruder': 2}
 
 def score(text, dict):
@@ -34,4 +34,4 @@ def classify_inci(text):
     score_dict['BOMBING'] = score(text, bomb_dict)
     score_dict['KIDNAPPING'] = score(text, kidnap_dict)
     score_dict['ROBBERY'] = score(text, robbery_dict)
-    return max(stats.iteritems(), key=operator.itemgetter(1))[0]
+    return max(score_dict.iteritems(), key=operator.itemgetter(1))[0]
