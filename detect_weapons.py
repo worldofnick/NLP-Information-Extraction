@@ -12,8 +12,4 @@ def extract_weapons(text, common_weapons):
             if common_weapon.lower() in words:
                 weapons.add(common_weapon)
 
-
-    if len(weapons) > 0:
-        print text
-        print weapons
     return weapons
