@@ -26,7 +26,6 @@ def is_passive(tagged_sentence):
 
 
 def find_matches(text):
-
     sent_text = nltk.sent_tokenize(text)
     perp = None
     victim = None
