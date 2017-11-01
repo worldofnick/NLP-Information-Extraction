@@ -1,4 +1,3 @@
 nltk
-fuzzywuzzy
 numpy
-python-Levenshtein
+spacy
