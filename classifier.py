@@ -4,7 +4,7 @@ from classify_incident import classify_inci
 from detect_weapons import extract_weapons
 from pattern_matcher import find_victims
 
-def classify(article, common_weapons):
+def classify(article, common_weapons, killing_verbs):
     incident_type = classify_inci(article.text)
     weapons = extract_weapons(article.text, common_weapons)
     victims = find_victims(article.text)

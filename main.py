@@ -6,9 +6,9 @@ import os
 ARTICLE_LOCATION = 'developset/texts'
 ANSWER_LOCATION = 'developset/answers'
 
-def load_weapons():
+def load_text(file_name):
     weapons = set()
-    lines = open(os.path.join(os.path.dirname(__file__), 'weapons.txt')).readlines()
+    lines = open(os.path.join(os.path.dirname(__file__), file_name)).readlines()
 
     for line in lines:
         tokens = line.split(',')
@@ -36,7 +36,7 @@ def main():
     for file_name in os.listdir(ARTICLE_LOCATION):
         text = open(os.path.join(os.path.dirname(__file__), ARTICLE_LOCATION + '/' + file_name)).readlines()
         article = Article(text)
-        extracted_info = classify(article, load_weapons())
+        extracted_info = classify(article, load_text('weapons.txt'), load_text('killingverbs.txt'))
 
 
 main()
