@@ -1,4 +1,4 @@
-from fuzzywuzzy import process, fuzz
+from __future__ import unicode_literals
 from nltk.tokenize import sent_tokenize, word_tokenize
 
 def extract_weapons(text, common_weapons):
