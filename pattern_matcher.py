@@ -27,8 +27,8 @@ def is_passive(tagged_sentence):
     return False
 
 
-def find_victims(text):
-    sent_text = nltk.sent_tokenize(text.lower())
+def find_victims(text, killing_verbs):
+    sent_text = nltk.sent_tokenize(text.upper())
     victim = None
 
     for sentence in sent_text:
@@ -36,18 +36,21 @@ def find_victims(text):
         doc = en_nlp(sentence)
         sentence = next(doc.sents)
 
-        for i in range(0, len(sentence) - 1):
-            prev_word = 'PHI'
-            if i > 0:
-                prev_word = sentence[i - 1]
 
-            next_word = sentence[i + 1]
-            word = sentence[i]
-            if word.dep_ == 'nsubj':
-                print prev_word.text
-                #print "%s:%s" % (word, word.dep_)
-                print word.text
-                print next_word.text
-                print
+
+
+        # for i in range(0, len(sentence) - 1):
+        #     prev_word = 'PHI'
+        #     if i > 0:
+        #         prev_word = sentence[i - 1]
+        #
+        #     next_word = sentence[i + 1]
+        #     word = sentence[i]
+        #     if word.dep_ == 'nsubj':
+        #         print prev_word.text
+        #         #print "%s:%s" % (word, word.dep_)
+        #         print word.text
+        #         print next_word.text
+        #         print
 
     return []

@@ -13,7 +13,7 @@ def load_text(file_name):
     for line in lines:
         tokens = line.split(',')
         for token in tokens:
-            weapons.add(token.strip().lower())
+            weapons.add(token.strip().upper())
 
     return weapons
 
@@ -28,7 +28,7 @@ def read_weapons():
                 if tokens[1] != '-':
                     tokens = tokens[1].split('/')
                     for token in tokens:
-                        weapons.add(token.strip().lower())
+                        weapons.add(token.strip().upper())
 
     print weapons
 
