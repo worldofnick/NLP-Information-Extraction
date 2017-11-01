@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 # Object to hold model information for information extracted from an article
 
 class ExtractedInfo:

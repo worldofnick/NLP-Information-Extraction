@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from Article import Article
 from classifier import classify
 import os
@@ -6,13 +7,13 @@ ARTICLE_LOCATION = 'developset/texts'
 ANSWER_LOCATION = 'developset/answers'
 
 def load_weapons():
-    weapons = []
+    weapons = set()
     lines = open(os.path.join(os.path.dirname(__file__), 'weapons.txt')).readlines()
 
     for line in lines:
         tokens = line.split(',')
         for token in tokens:
-            weapons.append(token.strip().lower())
+            weapons.add(token.strip().lower())
 
     return weapons
 
@@ -38,4 +39,4 @@ def main():
         extracted_info = classify(article, load_weapons())
 
 
-read_weapons()
+main()
