@@ -9,5 +9,5 @@ def classify(article, common_weapons):
     weapons = extract_weapons(article.text, common_weapons)
     victims = find_victims(article.text)
 
-    extracted_info = ExtractedInfo(article.id, incident_type, [], [], [], [], [])
+    extracted_info = ExtractedInfo(article.id, incident_type, weapons, [], [], [], [])
     return extracted_info
