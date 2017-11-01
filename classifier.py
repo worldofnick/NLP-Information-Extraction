@@ -7,7 +7,7 @@ from pattern_matcher import find_victims
 def classify(article, common_weapons, killing_verbs):
     incident_type = classify_inci(article.text)
     weapons = extract_weapons(article.text, common_weapons)
-    victims = find_victims(article.text)
+    victims = find_victims(article.text, killing_verbs)
 
     extracted_info = ExtractedInfo(article.id, incident_type, weapons, [], [], [], [])
     return extracted_info
