@@ -1,6 +1,8 @@
+from __future__ import unicode_literals
 import nltk
 import numpy as np
-from nltk import word_tokenize, pos_tag, ne_chunk
+import spacy
+from spacy.en import English
 
 # Returns true if the sentence is in passive voice
 def is_passive(tagged_sentence):
@@ -25,9 +27,27 @@ def is_passive(tagged_sentence):
     return False
 
 
-def find_matches(text):
-    sent_text = nltk.sent_tokenize(text)
-    perp = None
+def find_victims(text):
+    sent_text = nltk.sent_tokenize(text.lower())
     victim = None
+
     for sentence in sent_text:
-        tagged_sentence = pos_tag(word_tokenize(sentence))
+        en_nlp = English()
+        doc = en_nlp(sentence)
+        sentence = next(doc.sents)
+
+        for i in range(0, len(sentence) - 1):
+            prev_word = 'PHI'
+            if i > 0:
+                prev_word = sentence[i - 1]
+
+            next_word = sentence[i + 1]
+            word = sentence[i]
+            if word.dep_ == 'nsubj':
+                print prev_word.text
+                #print "%s:%s" % (word, word.dep_)
+                print word.text
+                print next_word.text
+                print
+
+    return []

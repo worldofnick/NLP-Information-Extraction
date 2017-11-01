@@ -1,3 +1,4 @@
 nltk
 fuzzywuzzy
 numpy
+python-Levenshtein
