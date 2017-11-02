@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 from nltk.tokenize import sent_tokenize, word_tokenize
 
 def extract_weapons(text, common_weapons):
-    THRESHOLD = 60
     sent_tokenize_list = sent_tokenize(text.upper())
     weapons = set()
 
