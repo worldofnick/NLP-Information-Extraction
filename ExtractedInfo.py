@@ -13,20 +13,8 @@ class ExtractedInfo:
 
         self.data = [weapons, perp_indivs, perp_orgs, targets, victims]
 
-    # Writes a string in the format specified in the project file
-    def write_template(self, file_output):
-        file_output.write('ID:            ' + id_name + '\n')
-        file_output.write('INCIDENT:      ' + incident + '\n')
 
-        headers = ['WEAPON:        ', 'PERP INDIV:    ', 'PERP ORG:      ',
-        'TARGET:        ', 'VICTIM:        ']
-
-
-        for (header, arr) in zip(headers, self.data):
-            write_list(header, arr, file_output)
-
-
-    def write_list(header, arr, file_output):
+    def write_list(self, header, arr, file_output):
         if arr:
         	printed_once = False
         	for item in arr:
@@ -34,6 +22,20 @@ class ExtractedInfo:
         			printed_once = True
         			file_output.write(header + item + '\n')
         		else:
-        		    f_out.write('               ' + item + '\n')
+        		    file_output.write('               ' + item + '\n')
         else:
         	file_output.write(header + '-\n')
+
+    # Writes a string in the format specified in the project file
+    def write_template(self, file_output):
+        file_output.write('ID:            ' + self.id + '\n')
+        file_output.write('INCIDENT:      ' + self.incident + '\n')
+
+        headers = ['WEAPON:        ', 'PERP INDIV:    ', 'PERP ORG:      ',
+        'TARGET:        ', 'VICTIM:        ']
+
+
+        for (header, arr) in zip(headers, self.data):
+            self.write_list(header, arr, file_output)
+
+        file_output.write('\n\n')
