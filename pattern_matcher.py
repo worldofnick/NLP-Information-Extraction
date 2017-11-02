@@ -26,44 +26,24 @@ def is_passive(tagged_sentence):
 
     return False
 
-# sentence procssed by spacy
-def capitalize_nouns(setence):
-    words = []
-    noun_tags = ['NOUN', 'PROPN']
-    for token in sentence:
-        if token.pos_ in noun_tags:
-            words.append(token.text_.title())
-
-    return ' '.join(words)
 
 def find_victims(text, killing_verbs):
     sent_text = nltk.sent_tokenize(text.upper())
     victims = []
-    targets = []
 
     for sentence in sent_text:
         en_nlp = English()
         doc = en_nlp(sentence)
-        sentence = next(doc.sents)
+        nlp_sentence = next(doc.sents)
+        victims_root = []
+        victims = []
 
-        for token in sentence:
-            if token.dep_ == 'ROOT' and token.lemma_ in killing_verbs:
-                killing_verb = token.text_
-                # Someone dies in this sentence
-                # Capitalize all nouns in sentence
-                cap_sentence = capitalize_nouns(sentence)
-                sentence_doc = en_nlp.make_doc(cap_sentence)
-                # NER
-                for word in sentence_doc:
-                    # Is this word a person and connected to the root verb?
-                    if word.ent_type_ == 'PERSON' and word.root.head.text == killing_verb and
+        for np in doc.noun_chunks:
+            if (np.root.head.lemma_ in killing_verbs and np.root.dep_ == 'nsubjpass') or np.root.head.text in victims_root:
+                victims.append(np.text)
+                victims_root.append(np.root.text)
 
-                # Take into account conjunctions
-
-                # If NER result is place make target
-                # If NER result is person make it victim
-
-    return []
+    return victims
 
 
 
@@ -83,9 +63,7 @@ def find_victims(text, killing_verbs):
 # 	#print(np.text, np.root.text, np.root.dep_, np.root.head.text)
 
 # def find_matches(sentence, patterns=[], targets=[]):
-#     en_nlp = English()
-#     doc = en_nlp(sentence)
-#     nlp_sentence = next(doc.sents)
+
 #
 #     pos_tags = []
 #
