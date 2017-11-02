@@ -38,4 +38,4 @@ class ExtractedInfo:
         for (header, arr) in zip(headers, self.data):
             self.write_list(header, arr, file_output)
 
-        file_output.write('\n\n')
+        file_output.write('\n')
