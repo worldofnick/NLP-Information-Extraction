@@ -28,14 +28,14 @@ def is_header(line, headers):
     return False
 
 def main():
-    
+
     input_path = sys.argv[1]
 
     lines = open(input_path).readlines()
     headers = ['DEV-MUC3', 'TST1-MUC3', 'TST2-MUC4']
-
     articles = []
     currentIndex = -1
+
     for line in lines:
         if is_header(line, headers):
             articles.append(line)
@@ -45,7 +45,6 @@ def main():
 
 
     file = open(ntpath.basename(input_path) + '.templates','w')
-
     for text in articles:
         article = Article(text)
         extracted_info = classify(article, load_text('weapons.txt'), load_text('killingverbs.txt'))
