@@ -30,7 +30,6 @@ def is_header(line, headers):
 def main():
 
     input_path = sys.argv[1]
-
     lines = open(input_path).readlines()
     headers = ['DEV-MUC3', 'TST1-MUC3', 'TST2-MUC4']
     articles = []
