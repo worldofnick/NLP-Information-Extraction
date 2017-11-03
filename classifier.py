@@ -8,6 +8,6 @@ from detect_org import detect_orgs
 def classify(article, common_weapons, killing_verbs):
     incident_type = classify_inci(article.text)
     weapons = extract_weapons(article.text, common_weapons)
-    orgs = detect_orgs(article.text)
+    # orgs = detect_orgs(article.text)
 
-    return ExtractedInfo(article.id, incident_type, weapons, [], orgs, [], [])
+    return ExtractedInfo(article.id, incident_type, weapons, [], [], [], [])
