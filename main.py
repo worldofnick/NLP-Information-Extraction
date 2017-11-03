@@ -50,5 +50,7 @@ def main():
         extracted_info = classify(article, load_text('weapons.txt'), load_text('killingverbs.txt'))
         extracted_info.write_template(file)
 
+    print 'Successfully saved to ' + ntpath.basename(input_path) + '.templates'
+
 
 main()
