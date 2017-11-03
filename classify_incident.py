@@ -28,6 +28,7 @@ def score(text, dict):
     return score
 
 def classify_inci(text):
+    text = text.lower()
     score_dict = {}
     score_dict['ARSON'] = score(text, arson_dict)
     score_dict['ATTACK'] = score(text, attack_dict)
