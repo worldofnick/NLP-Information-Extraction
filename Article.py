@@ -3,5 +3,5 @@ from __future__ import unicode_literals
 class Article:
     def __init__(self, text):
         self.id = text.split()[0]
-        text = text[:len(self.id)]
-        self.text = ' '.join(text)
+        text = text[len(self.id):]
+        self.text = text
