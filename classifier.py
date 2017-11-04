@@ -9,7 +9,7 @@ from detect_targets import detect_targets
 def classify(article, common_weapons, killing_verbs):
     incident_type = classify_inci(article.text)
     weapons = extract_weapons(article.text, common_weapons)
-    orgs = detect_orgs(article.text)
+    orgs = detect_orgs(article.text, killing_verbs)
     targets = detect_targets(article.text, killing_verbs)
     # victims = find_victims(article.text, killing_verbs)
 
