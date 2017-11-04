@@ -54,6 +54,7 @@ def detect_targets(article_text, killing_words):
         current_sent_str = ' '.join(current_sentence)
         isPassive = is_passive(pos_tag_string)
         isPreposition = False
+        isInfinitive = False
         word_pos_tuples = zip(current_sentence, tags)
 
 
@@ -67,8 +68,13 @@ def detect_targets(article_text, killing_words):
         print "Is Preposition  : " + str(isPreposition)
         print
 
+        if "TO" in pos_tag_string:
+            isInfinitive = True
+        print "Is Infinitive  : " + str(isInfinitive)
+        print
+
         # active-vp prep <np> : <target>
-        if not isPassive and isPreposition:
+        if not isPassive and isPreposition and not isInfinitive:
             prep_index = -1
 
             # for tuple in word_pos_tuples:
@@ -92,8 +98,11 @@ def detect_targets(article_text, killing_words):
                     for j in range(i+1, len(word_pos_tuples)):
                         t = word_pos_tuples[j]
                         if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
-                            compound_target_name = compound_target_name + " " + str(t[0])
-                        elif t[1] == 'PART':
+                            if word_pos_tuples[j - 1][1] == 'PUNCT':
+                                compound_target_name = compound_target_name + str(t[0])
+                            else:
+                                compound_target_name = compound_target_name + " " + str(t[0])
+                        elif t[1] == 'PART' or t[1] == 'PUNCT':
                             compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'CCONJ':
                             j = j + 1
@@ -106,7 +115,7 @@ def detect_targets(article_text, killing_words):
 
             print "-----------------------------"
 
-        elif not isPassive:
+        elif not isPassive and not isInfinitive:
             print
             for i in range(0, len(word_pos_tuples)):
                 tuple = word_pos_tuples[i]
@@ -120,8 +129,11 @@ def detect_targets(article_text, killing_words):
                             compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'PRON':
                             if word_pos_tuples[j+1][1] == 'NOUN' or word_pos_tuples[j+1][1] == 'PROPN':
-                                compound_target_name = compound_target_name + " " + str(t[0])
-                            elif t[1] == 'PART':
+                                if word_pos_tuples[j - 1][1] == 'PUNCT':
+                                    compound_target_name = compound_target_name + str(t[0])
+                                else:
+                                    compound_target_name = compound_target_name + " " + str(t[0])
+                            elif t[1] == 'PART' or t[1] == 'PUNCT':
                                 compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'CCONJ' or t[1] == 'DET':
                             j = j + 1
@@ -132,7 +144,7 @@ def detect_targets(article_text, killing_words):
                     targets.append(compound_target_name.upper())
                     break
 
-        elif isPassive:
+        elif isPassive and not isInfinitive:
             subject_end_index = -1;
             for i in range(0, len(word_pos_tuples)):
                 tuple = word_pos_tuples[i]
@@ -150,8 +162,11 @@ def detect_targets(article_text, killing_words):
                     for j in range(i + 1, subject_end_index):
                         t = word_pos_tuples[j]
                         if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
-                            compound_target_name = compound_target_name + " " + str(t[0])
-                        elif t[1] == 'PART':
+                            if word_pos_tuples[j - 1][1] == 'PUNCT':
+                                compound_target_name = compound_target_name + str(t[0])
+                            else:
+                                compound_target_name = compound_target_name + " " + str(t[0])
+                        elif t[1] == 'PART' or t[1] == 'PUNCT':
                             compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'CCONJ':
                             j = j + 1
