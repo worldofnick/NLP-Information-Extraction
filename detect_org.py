@@ -24,7 +24,7 @@ def is_passive(tagged_sentence):
     # print u'=========================='
     return False
 
-def detect_orgs(article_text, killing_words):
+def detect_orgs(article_text):
     print "========= PREPS =============="
     titlecase_article_text = article_text.lower()
     # nlp = English()
