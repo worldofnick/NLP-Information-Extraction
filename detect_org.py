@@ -1,13 +1,130 @@
 from __future__ import unicode_literals
 import spacy
+import nltk
 from spacy.en import English
 
-def detect_orgs(text):
-    nlp = English()
-    doc = nlp(text)
-    orgs = []
-    for ent in doc.ents:
-        if ent.label_ == 'ORG':
-            orgs.append(ent.text)
+#TODO: change these common rules (<VBZ><VBN>|<VBP><VBN>|<VBD><VBN>) to corresponding was, were, had, etc
+def is_passive(tagged_sentence):
+    passive_tags = ['VBZ VBN', 'VBP VBN',
+                    'VBZ VBG VBN', 'VBP VBG VBN',
+                    'VBZ VBN VBN', 'VBP VBN VBN',
+                    'VBD VBN',
+                    'VBD VBG VBN',
+                    'VBD VBN VBN',
+                    'MD VB VBN',
+                    'MD VB VBN VBN']
 
-    return orgs
+    # print u'========== PASSIVE TAGS =========='
+    for tag in passive_tags:
+        # print tag
+        if tag in tagged_sentence:
+            # print u'=========================='
+            return True
+
+    # print u'=========================='
+    return False
+
+def detect_orgs(article_text, killing_words):
+    print "========= PREPS =============="
+    titlecase_article_text = article_text.lower()
+    # nlp = English()
+    # doc = nlp(article_text)
+
+    tokenized_sents = nltk.sent_tokenize(titlecase_article_text)
+    perp_orgs = []
+    en_nlp = English()
+
+    # Process each sentence in the article
+    for tokenized_sentence in tokenized_sents:
+        pos_tags = []
+        tags = []
+        current_sentence = []
+        doc = en_nlp(tokenized_sentence)
+        nlp_sentence = next(doc.sents)
+
+        # For each word in the tokenized sentences
+        for i in range(0, nlp_sentence.end):
+            np = nlp_sentence[i]
+            pos_tags.append(np.tag_)
+            tags.append(np.pos_)
+            current_sentence.append(np.text)
+
+        pos_tag_string = ' '.join(pos_tags)
+        tag_string = ' '.join(tags)
+        current_sent_str = ' '.join(current_sentence)
+        isPassive = is_passive(pos_tag_string)
+        isPreposition = False
+        isInfinitive = False
+        word_pos_tuples = zip(current_sentence, tags, pos_tags)
+
+        print u'POS tag string  : ' + pos_tag_string
+        print u'POS     string  : ' + tag_string
+        print "Sentence        : " + current_sent_str
+        print "is Passive voice : " + str(isPassive)
+
+        if "ADP" in tag_string:
+            isPreposition = True
+        print "Is Preposition  : " + str(isPreposition)
+        print
+
+        if "TO" in pos_tag_string:
+            isInfinitive = True
+        print "Is Infinitive  : " + str(isInfinitive)
+        print
+
+        if isPassive and isInfinitive:
+            subject_end_index = -1;
+            for i in range(0, len(word_pos_tuples)):
+                tuple = word_pos_tuples[i]
+                if tuple[2] == 'TO' and str(nlp_sentence[i+1].lemma_).upper() in killing_words:
+                    subject_end_index = i
+                    break
+
+            for i in range(0, subject_end_index):
+                tuple = word_pos_tuples[i]
+
+                if tuple[1] == 'DET':
+                    continue
+                elif tuple[1] == 'ADJ' or tuple[1] == 'NOUN' or tuple[1] == 'PROPN':
+                    compound_perp_name = str(tuple[0])
+                    for j in range(i + 1, subject_end_index):
+                        t = word_pos_tuples[j]
+                        if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
+                            if word_pos_tuples[j-1][1] == 'PUNCT':
+                                compound_perp_name = compound_perp_name + str(t[0])
+                            else:
+                                compound_perp_name = compound_perp_name + " " + str(t[0])
+                        elif t[1] == 'PART' or t[1] == 'PUNCT':
+                            compound_perp_name = compound_perp_name + str(t[0])
+                        elif t[1] == 'CCONJ':
+                            j = j + 1
+                        else:
+                            i = j + 1
+                            break
+                    print "Found Prep to be verified: " + compound_perp_name.upper()
+                    titled_prep = compound_perp_name.title()
+                    for ent in en_nlp(article_text.title()):
+                        if ent.text == titled_prep:
+                            if ent.ent_type_ == 'ORG': #TODO: add others? GPE, NORP, etc
+                                print "Prep is org"
+                                perp_orgs.append(compound_perp_name.upper())
+                            break
+                    break
+
+    print "========= END =============="
+
+
+
+
+
+
+
+
+    # nlp = English()
+    # doc = nlp(article_text)
+    # orgs = []
+    # for ent in doc.ents:
+    #     if ent.label_ == 'ORG':
+    #         orgs.append(ent.text)
+    #
+    # return orgs
