@@ -31,7 +31,7 @@ def detect_orgs(article_text, killing_words):
     # doc = nlp(article_text)
 
     tokenized_sents = nltk.sent_tokenize(titlecase_article_text)
-    perp_orgs = []
+    perp_orgs = set()
     en_nlp = English()
 
     # Process each sentence in the article
@@ -106,7 +106,7 @@ def detect_orgs(article_text, killing_words):
                         if ent.text == titled_prep:
                             if ent.ent_type_ == 'ORG': #TODO: add others? GPE, NORP, etc
                                 print "Prep is org"
-                                perp_orgs.append(compound_perp_name.upper())
+                                perp_orgs.add(compound_perp_name.upper())
                                 print
                             break
                     break
@@ -125,7 +125,7 @@ def detect_orgs(article_text, killing_words):
 
                 # if (tuple[1] == 'NOUN' or tuple[1] == 'PROPN') and prep_index != -1:
                 #     print "Found prep to be checked: " + str(tuple[0]).upper()
-                #     perp_orgs.append(str(tuple[0]).upper())
+                #     perp_orgs.add(str(tuple[0]).upper())
                 # elif
                 if (tuple[1] == 'ADJ' or tuple[1] == 'NOUN' or tuple[1] == 'PROPN') and prep_index != -1:
                     compound_perp_name = str(tuple[0])
@@ -151,7 +151,7 @@ def detect_orgs(article_text, killing_words):
                             if ent.ent_type_ == 'ORG':  # TODO: add others? GPE, NORP, etc
                                 print "Prep is org"
                                 print
-                                perp_orgs.append(compound_perp_name.upper())
+                                perp_orgs.add(compound_perp_name.upper())
                             break
                     break
 
@@ -192,7 +192,7 @@ def detect_orgs(article_text, killing_words):
                             if ent.ent_type_ == 'ORG':  # TODO: add others? GPE, NORP, etc
                                 print "Prep is org"
                                 print
-                                perp_orgs.append(compound_perp_name.upper())
+                                perp_orgs.add(compound_perp_name.upper())
                             break
                     break
 
@@ -233,7 +233,7 @@ def detect_orgs(article_text, killing_words):
                             if ent.ent_type_ == 'ORG':  # TODO: add others? GPE, NORP, etc
                                 print "Prep is org"
                                 print
-                                perp_orgs.append(compound_perp_name.upper())
+                                perp_orgs.add(compound_perp_name.upper())
                             break
                     break
 

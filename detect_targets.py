@@ -30,7 +30,7 @@ def detect_targets(article_text, killing_words):
     # doc = nlp(article_text)
 
     tokenized_sents = nltk.sent_tokenize(titlecase_article_text)
-    targets = []
+    targets = set()
     en_nlp = English()
 
 
@@ -92,7 +92,7 @@ def detect_targets(article_text, killing_words):
 
                 if (tuple[1] == 'NOUN' or tuple[1] == 'PROPN') and prep_index != -1:
                     print "Target: " + str(tuple[0]).upper()
-                    targets.append(str(tuple[0]).upper())
+                    targets.add(str(tuple[0]).upper())
                 elif tuple[1] == 'ADJ' and prep_index != -1:
                     compound_target_name = str(tuple[0])
                     for j in range(i+1, len(word_pos_tuples)):
@@ -110,7 +110,7 @@ def detect_targets(article_text, killing_words):
                             i = j+1
                             break
                     print "Target: " + compound_target_name.upper()
-                    targets.append(compound_target_name.upper())
+                    targets.add(compound_target_name.upper())
                     break
 
             print "-----------------------------"
@@ -141,7 +141,7 @@ def detect_targets(article_text, killing_words):
                             i = j+1
                             break
                     print "Target: " + compound_target_name.upper()
-                    targets.append(compound_target_name.upper())
+                    targets.add(compound_target_name.upper())
                     break
 
         elif isPassive and not isInfinitive:
@@ -174,7 +174,7 @@ def detect_targets(article_text, killing_words):
                             i = j + 1
                             break
                     print "Target: " + compound_target_name.upper()
-                    targets.append(compound_target_name.upper())
+                    targets.add(compound_target_name.upper())
                     break
 
 
