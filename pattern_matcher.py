@@ -1,93 +1,67 @@
-from __future__ import unicode_literals
-import nltk
-import numpy as np
-import spacy
-from spacy.en import English
+import nltk, re, pprint 
 
-# Returns true if the sentence is in passive voice
-def is_passive(tagged_sentence):
-    passive_tags = [['VBZ', 'VBN'], ['VBP', 'VBN'],
-    ['VBZ', 'VBG', 'VBN'], ['VBP', 'VBG', 'VBN'],
-    ['VBZ', 'VBN', 'VBN'], ['VBP', 'VBN', 'VBN'],
-    ['VBD', 'VBN'],
-    ['VBD', 'VBG', 'VBN'],
-    ['VBD', 'VBN', 'VBN'],
-    ['MD', 'VB', 'VBN'],
-    ['MD', 'VB', 'VBN', 'VBN']]
+def preprocessing(document):
 
-    tags = [word[1] for word in tagged_sentence]
+    # Split the document into sentences using sent segmenter
+    sentences = nltk.sent_tokenize(document)
 
-    tags = np.array(tags)
-    passive_tags = np.array(passive_tags)
+    # Sub-divide each sent into token using a tokenizer
+    sentences = [nltk.word_tokenize(word) for word in sentences]
 
-    for passive_tag in passive_tags:
-        if any((passive_tag == tags).all() for tags in passive_tag):
-            return True
+    # pos tagger on each sentence
+    sentences = [nltk.pos_tag(word) for word in sentences]
+    return sentences
 
-    return False
+def get_subject(chunked_sentence_tree):
+    if type(chunked_sentence_tree[0]) is nltk.Tree:
+        if chunked_sentence_tree[0].label() == 'S':
+            return chunk_tree_to_sent(chunked_sentence_tree[0][0])
+            # return str(chunked_sentence_tree[0][0])
+    else:
+        return '***'
+
+punct_re = re.compile(r'\s([,\.;\?])')
+
+def chunk_tree_to_sent(tree, concat=' '):
+    words = []
+    for tup in tree.leaves():
+        words.append(tup.split('/')[0])
+
+    s = concat.join(words)
+    # s = concat.join([w for w, t in tree.leaves()]) 
+    return re.sub(punct_re, r'\g<1>', s)
 
 
-def find_victims(text, killing_verbs):
-    sent_text = nltk.sent_tokenize(text.upper())
+def np_chunker(sentence):
+    np_chunk_grammar = r"""
+    NP: {<DT|WP|PRP\$|PRP|\$|CD|JJ|NN.*>+<PP>*}          # Chunk sequences of DT, JJ, NN
+    PP: {<IN><NP>|<TO><NP>}               # Chunk prepositions followed by NP
+    NP: { < NP > + < CONJ > < ADV > * < NP > +}
+    ADV: {<RB.*>*}
+    CONJ: {<\,>*<CC>*<WDT>*<\,>*}
+    AUX: {<MD>*}
+    VP: {<VB.*>+<NP>*<PP>*<ADV>*}
+    VP: { <VP>+<CONJ>+<VP>+}
+    S: {<NP>+<AUX>*<VP>+}
+    S: {<S>+<CONJ><S>+}
+
+    """
+    chunk_parser = nltk.RegexpParser(np_chunk_grammar, loop=20) 
+    result = chunk_parser.parse(sentence)
+    t = nltk.Tree.fromstring(str(result)) 
+
+    return get_subject(t)
+
+def find_victims(text):
+    sentences = preprocessing(text.lower())
     victims = []
-
-    for sentence in sent_text:
-        en_nlp = English()
-        doc = en_nlp(sentence)
-        nlp_sentence = next(doc.sents)
-        victims_root = []
-        victims = []
-
-        for np in doc.noun_chunks:
-            if (np.root.head.lemma_ in killing_verbs and np.root.dep_ == 'nsubjpass') or np.root.head.text in victims_root:
-                victims.append(np.text)
-                victims_root.append(np.root.text)
+    
+    
+    for sentence in sentences:
+        victim = np_chunker(sentence)
+        if victim != '***' and victim != None:
+            victims.append(victim)
 
     return victims
 
 
-
-
-
-# import spacy
-# from spacy.en import English
-
-# nlp = English()
-# doc = nlp(u'Nick and Brandon were killed by Ash')
-# for np in doc.noun_chunks:
-# 	print(np.text, np.root.dep_, np.root.head.text)
-# 	# print np.dep_
-# 	# print np.lemma_
-# 	# print np.ent_type_
-# 	print
-# 	#print(np.text, np.root.text, np.root.dep_, np.root.head.text)
-
-# def find_matches(sentence, patterns=[], targets=[]):
-
-#
-#     pos_tags = []
-#
-#     for i in range(0, len(nlp_sentence)):
-# 		np = nlp_sentence[i]
-# 		print np.tag_
-# 		print np.dep_
-# 		print np.ent_type_
-#
-# 		if np.dep_ == 'nsubjpass' and np.ent_type_ == 'PERSON':
-# 			print 'Victim: ' + np.text
-#
-# 		elif np.dep_ == 'nsubjpass':
-# 			print 'Target: ' + np.text
-# 		print
-#
-#
-#     pos_tag_string = ' '.join(pos_tags)
-#     print pos_tag_string
-#
-#
-#
-#
-# sentence = u'Nick, Adam, and Ash were bombed'
-#
-#
-# find_matches(sentence)
