@@ -65,12 +65,10 @@ def detect_orgs(article_text, killing_words):
         if "ADP" in tag_string:
             isPreposition = True
         print "Is Preposition  : " + str(isPreposition)
-        print
 
         if "TO" in pos_tag_string:
             isInfinitive = True
         print "Is Infinitive  : " + str(isInfinitive)
-        print
 
         if isPassive and isInfinitive:
             subject_end_index = -1;
@@ -102,12 +100,14 @@ def detect_orgs(article_text, killing_words):
                             i = j + 1
                             break
                     print "Found Prep to be verified: " + compound_perp_name.upper()
+                    print
                     titled_prep = compound_perp_name.title()
                     for ent in en_nlp(article_text.title()):
                         if ent.text == titled_prep:
                             if ent.ent_type_ == 'ORG': #TODO: add others? GPE, NORP, etc
                                 print "Prep is org"
                                 perp_orgs.append(compound_perp_name.upper())
+                                print
                             break
                     break
 
@@ -144,11 +144,13 @@ def detect_orgs(article_text, killing_words):
                             i = j + 1
                             break
                     print "Found prep to be checked: " + compound_target_name.upper()
+                    print
                     titled_prep = compound_perp_name.title()
                     for ent in en_nlp(article_text.title()):
                         if ent.text == titled_prep:
                             if ent.ent_type_ == 'ORG':  # TODO: add others? GPE, NORP, etc
                                 print "Prep is org"
+                                print
                                 perp_orgs.append(compound_perp_name.upper())
                             break
                     break
@@ -183,11 +185,54 @@ def detect_orgs(article_text, killing_words):
                             i = j + 1
                             break
                     print "Found Prep to be verified: " + compound_perp_name.upper()
+                    print
                     titled_prep = compound_perp_name.title()
                     for ent in en_nlp(article_text.title()):
                         if ent.text == titled_prep:
                             if ent.ent_type_ == 'ORG':  # TODO: add others? GPE, NORP, etc
                                 print "Prep is org"
+                                print
+                                perp_orgs.append(compound_perp_name.upper())
+                            break
+                    break
+
+        elif not isPassive and not isInfinitive and not isPreposition:
+            subject_end_index = -1;
+            for i in range(0, len(word_pos_tuples)):
+                lemma = str(nlp_sentence[i].lemma_).upper()
+                if lemma in killing_words:
+                    subject_end_index = i
+                    break
+
+            for i in range(0, subject_end_index):
+                tuple = word_pos_tuples[i]
+
+                if tuple[1] == 'DET':
+                    continue
+                elif tuple[1] == 'ADJ' or tuple[1] == 'NOUN' or tuple[1] == 'PROPN':
+                    compound_perp_name = str(tuple[0])
+                    for j in range(i + 1, subject_end_index):
+                        t = word_pos_tuples[j]
+                        if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
+                            if word_pos_tuples[j - 1][1] == 'PUNCT' and word_pos_tuples[j - 1][0] != '.':
+                                compound_perp_name = compound_perp_name + str(t[0])
+                            else:
+                                compound_perp_name = compound_perp_name + " " + str(t[0])
+                        elif t[1] == 'PART' or (t[1] == 'PUNCT' and t[0] != '.'):
+                            compound_perp_name = compound_perp_name + str(t[0])
+                        elif t[1] == 'CCONJ':
+                            j = j + 1
+                        else:
+                            i = j + 1
+                            break
+                    print "Found Prep to be verified: " + compound_perp_name.upper()
+                    print
+                    titled_prep = compound_perp_name.title()
+                    for ent in en_nlp(article_text.title()):
+                        if ent.text == titled_prep:
+                            if ent.ent_type_ == 'ORG':  # TODO: add others? GPE, NORP, etc
+                                print "Prep is org"
+                                print
                                 perp_orgs.append(compound_perp_name.upper())
                             break
                     break
