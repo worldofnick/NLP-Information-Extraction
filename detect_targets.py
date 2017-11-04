@@ -98,11 +98,11 @@ def detect_targets(article_text, killing_words):
                     for j in range(i+1, len(word_pos_tuples)):
                         t = word_pos_tuples[j]
                         if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
-                            if word_pos_tuples[j - 1][1] == 'PUNCT':
+                            if word_pos_tuples[j - 1][1] == 'PUNCT' and word_pos_tuples[j-1][0] != '.':
                                 compound_target_name = compound_target_name + str(t[0])
                             else:
                                 compound_target_name = compound_target_name + " " + str(t[0])
-                        elif t[1] == 'PART' or t[1] == 'PUNCT':
+                        elif t[1] == 'PART' or (t[1] == 'PUNCT' and t[0] != '.'):
                             compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'CCONJ':
                             j = j + 1
@@ -129,11 +129,11 @@ def detect_targets(article_text, killing_words):
                             compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'PRON':
                             if word_pos_tuples[j+1][1] == 'NOUN' or word_pos_tuples[j+1][1] == 'PROPN':
-                                if word_pos_tuples[j - 1][1] == 'PUNCT':
+                                if word_pos_tuples[j - 1][1] == 'PUNCT' and word_pos_tuples[j-1][0] != '.':
                                     compound_target_name = compound_target_name + str(t[0])
                                 else:
                                     compound_target_name = compound_target_name + " " + str(t[0])
-                            elif t[1] == 'PART' or t[1] == 'PUNCT':
+                            elif t[1] == 'PART' or (t[1] == 'PUNCT' and t[0] != '.'):
                                 compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'CCONJ' or t[1] == 'DET':
                             j = j + 1
@@ -162,11 +162,11 @@ def detect_targets(article_text, killing_words):
                     for j in range(i + 1, subject_end_index):
                         t = word_pos_tuples[j]
                         if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
-                            if word_pos_tuples[j - 1][1] == 'PUNCT':
+                            if word_pos_tuples[j - 1][1] == 'PUNCT' and word_pos_tuples[j-1][0] != '.':
                                 compound_target_name = compound_target_name + str(t[0])
                             else:
                                 compound_target_name = compound_target_name + " " + str(t[0])
-                        elif t[1] == 'PART' or t[1] == 'PUNCT':
+                        elif t[1] == 'PART' or (t[1] == 'PUNCT' and t[0] != '.'):
                             compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'CCONJ':
                             j = j + 1
