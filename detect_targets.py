@@ -86,8 +86,8 @@ def detect_targets(article_text, killing_words):
                 if tuple[1] == 'ADP' and prep_index == -1:
                     # check if prev_word is in killing_words
                     np_prev = nlp_sentence[i-1]
+                    prep_index = i
                     if str(nlp_sentence[i - 1].lemma_).upper() not in killing_words:
-                        prep_index = i
                         break
 
                 if (tuple[1] == 'NOUN' or tuple[1] == 'PROPN') and prep_index != -1:
