@@ -104,11 +104,39 @@ def detect_targets(article_text, killing_words):
 
             print "-----------------------------"
 
+        elif not isPassive:
+            print
+            for i in range(0, len(word_pos_tuples)):
+                tuple = word_pos_tuples[i]
+                if tuple[1] == 'VERB' and str(nlp_sentence[i].lemma_).upper() in killing_words:
+                    compound_target_name = ""
+                    for j in range(i + 1, len(word_pos_tuples)):
+                        t = word_pos_tuples[j]
+                        if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
+                            compound_target_name = compound_target_name + " " + str(t[0])
+                        elif t[1] == 'PRON':
+                            if word_pos_tuples[j+1][1] == 'NOUN' or word_pos_tuples[j+1][1] == 'PROPN':
+                                compound_target_name = compound_target_name + " " + str(t[0])
+                        elif t[1] == 'CCONJ' or t[1] == 'DET':
+                            j = j + 1
+                        else:
+                            i = j+1
+                            break
+                    print "Target: " + compound_target_name
+                    targets.append(compound_target_name)
+                    break
+
+        elif isPassive:
+            subject_end_index = -1;
+            for i in range(0, len(word_pos_tuples)):
+                tuple = word_pos_tuples[i]
+                if tuple[1] == 'VERB' and str(nlp_sentence[i].lemma_).upper() in killing_words:
+                    subject_end_index = i
+                    break
+
+            for i in range(0, subject_end_index):
+                tuple = word_pos_tuples[i]
+                if tuple[1] == 'VERB':
+                    break;
 
 
-    # orgs = []
-    # for ent in doc.ents:
-    #     if ent.label_ == 'ORG':
-    #         orgs.append(ent.text)
-    #
-    # return orgs
