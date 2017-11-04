@@ -3,7 +3,7 @@ import spacy
 import nltk, re, pprint
 from spacy.en import English
 
-#TODO: change common rules to was, were, had, etc
+#TODO: change these common rules (<VBZ><VBN>|<VBP><VBN>|<VBD><VBN>) to corresponding was, were, had, etc
 def is_passive(tagged_sentence):
     passive_tags = ['VBZ VBN', 'VBP VBN',
                     'VBZ VBG VBN', 'VBP VBG VBN',
@@ -85,21 +85,23 @@ def detect_targets(article_text, killing_words):
                         break
 
                 if (tuple[1] == 'NOUN' or tuple[1] == 'PROPN') and prep_index != -1:
-                    print "Target: " + str(tuple[0])
-                    targets.append(str(tuple[0]))
+                    print "Target: " + str(tuple[0]).upper()
+                    targets.append(str(tuple[0]).upper())
                 elif tuple[1] == 'ADJ' and prep_index != -1:
                     compound_target_name = str(tuple[0])
                     for j in range(i+1, len(word_pos_tuples)):
                         t = word_pos_tuples[j]
                         if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
                             compound_target_name = compound_target_name + " " + str(t[0])
+                        elif t[1] == 'PART':
+                            compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'CCONJ':
                             j = j + 1
                         else:
                             i = j+1
                             break
-                    print "Target: " + compound_target_name
-                    targets.append(compound_target_name)
+                    print "Target: " + compound_target_name.upper()
+                    targets.append(compound_target_name.upper())
                     break
 
             print "-----------------------------"
@@ -114,16 +116,20 @@ def detect_targets(article_text, killing_words):
                         t = word_pos_tuples[j]
                         if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
                             compound_target_name = compound_target_name + " " + str(t[0])
+                        elif t[1] == 'PART':
+                            compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'PRON':
                             if word_pos_tuples[j+1][1] == 'NOUN' or word_pos_tuples[j+1][1] == 'PROPN':
                                 compound_target_name = compound_target_name + " " + str(t[0])
+                            elif t[1] == 'PART':
+                                compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'CCONJ' or t[1] == 'DET':
                             j = j + 1
                         else:
                             i = j+1
                             break
-                    print "Target: " + compound_target_name
-                    targets.append(compound_target_name)
+                    print "Target: " + compound_target_name.upper()
+                    targets.append(compound_target_name.upper())
                     break
 
         elif isPassive:
@@ -139,23 +145,22 @@ def detect_targets(article_text, killing_words):
 
                 if tuple[1] == 'DET':
                     continue
-                elif tuple[1] == 'ADJ':
+                elif tuple[1] == 'ADJ' or tuple[1] == 'NOUN' or tuple[1] == 'PROPN':
                     compound_target_name = str(tuple[0])
                     for j in range(i + 1, subject_end_index):
                         t = word_pos_tuples[j]
                         if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
                             compound_target_name = compound_target_name + " " + str(t[0])
+                        elif t[1] == 'PART':
+                            compound_target_name = compound_target_name + str(t[0])
                         elif t[1] == 'CCONJ':
                             j = j + 1
                         else:
                             i = j + 1
                             break
-                    print "Target: " + compound_target_name
-                    targets.append(compound_target_name)
+                    print "Target: " + compound_target_name.upper()
+                    targets.append(compound_target_name.upper())
                     break
-
-                # if tuple[1] == 'VERB':
-                #     break;
 
 
 
