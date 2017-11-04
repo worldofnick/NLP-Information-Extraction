@@ -176,6 +176,6 @@ def detect_targets(article_text, killing_words, en_nlp):
                     targets.add(compound_target_name.upper())
                     break
 
-
+    return targets
 
 

@@ -283,7 +283,7 @@ def detect_individuals(article_text, killing_words, en_nlp):
 
     print "========= END =============="
 
-
+    return perp_individuals
 
 
 

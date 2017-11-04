@@ -239,7 +239,7 @@ def detect_orgs(article_text, killing_words, en_nlp):
 
 
     print "========= END =============="
-
+    return perp_orgs
 
 
 
