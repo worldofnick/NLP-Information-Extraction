@@ -128,22 +128,22 @@ def detect_orgs(article_text, killing_words):
                 #     perp_orgs.append(str(tuple[0]).upper())
                 # elif
                 if (tuple[1] == 'ADJ' or tuple[1] == 'NOUN' or tuple[1] == 'PROPN') and prep_index != -1:
-                    compound_target_name = str(tuple[0])
+                    compound_perp_name = str(tuple[0])
                     for j in range(i + 1, len(word_pos_tuples)):
                         t = word_pos_tuples[j]
                         if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
                             if word_pos_tuples[j - 1][1] == 'PUNCT' and word_pos_tuples[j-1][0] != '.':
-                                compound_target_name = compound_target_name + str(t[0])
+                                compound_perp_name = compound_perp_name + str(t[0])
                             else:
-                                compound_target_name = compound_target_name + " " + str(t[0])
+                                compound_perp_name = compound_perp_name + " " + str(t[0])
                         elif t[1] == 'PART' or  (t[1] == 'PUNCT' and t[0] != '.'):
-                            compound_target_name = compound_target_name + str(t[0])
+                            compound_perp_name = compound_perp_name + str(t[0])
                         elif t[1] == 'CCONJ':
                             j = j + 1
                         else:
                             i = j + 1
                             break
-                    print "Found prep to be checked: " + compound_target_name.upper()
+                    print "Found prep to be checked: " + compound_perp_name.upper()
                     print
                     titled_prep = compound_perp_name.title()
                     for ent in en_nlp(article_text.title()):
