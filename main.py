@@ -3,11 +3,15 @@ from Article import Article
 from classifier import classify
 import os
 import sys
+import spacy
+from spacy.en import English
 import re
 import ntpath
 
 ARTICLE_LOCATION = 'developset/texts'
 ANSWER_LOCATION = 'developset/answers'
+
+en_nlp = English()
 
 def load_text(file_name):
     weapons = set()
@@ -49,7 +53,7 @@ def main():
     for text in articles:
         print ">> Processing article " + str(count)
         article = Article(text)
-        extracted_info = classify(article, load_text('weapons.txt'), load_text('killingverbs.txt'))
+        extracted_info = classify(article, load_text('weapons.txt'), load_text('killingverbs.txt'), en_nlp)
         extracted_info.write_template(file)
         count += 1
 

@@ -24,7 +24,7 @@ def is_passive(tagged_sentence):
     # print u'=========================='
     return False
 
-def detect_orgs(article_text, killing_words):
+def detect_orgs(article_text, killing_words, en_nlp):
     print "========= PREPS =============="
     titlecase_article_text = article_text.lower()
     # nlp = English()
@@ -32,7 +32,6 @@ def detect_orgs(article_text, killing_words):
 
     tokenized_sents = nltk.sent_tokenize(titlecase_article_text)
     perp_orgs = set()
-    en_nlp = English()
 
     # Process each sentence in the article
     for tokenized_sentence in tokenized_sents:

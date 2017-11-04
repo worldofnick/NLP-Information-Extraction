@@ -24,14 +24,13 @@ def is_passive(tagged_sentence):
     # print u'=========================='
     return False
 
-def detect_targets(article_text, killing_words):
+def detect_targets(article_text, killing_words, en_nlp):
     titlecase_article_text = article_text.lower()
     # nlp = English()
     # doc = nlp(article_text)
 
     tokenized_sents = nltk.sent_tokenize(titlecase_article_text)
     targets = set()
-    en_nlp = English()
 
 
     # Process each sentence in the article
