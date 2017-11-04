@@ -45,19 +45,20 @@ def np_chunker(sentence):
     np_chunk_grammar = r"""
     NP: {<DT|WP|PRP\$|PRP|\$|CD|JJ|NN.*>+<PP>*}          # Chunk sequences of DT, JJ, NN
     PP: {<IN><NP>|<TO><NP>}               # Chunk prepositions followed by NP
-    
+    NP: { < NP > + < CONJ > < ADV > * < NP > +}
     ADV: {<RB.*>*}
     CONJ: {<\,>*<CC>*<WDT>*<\,>*}
     AUX: {<MD>*}
     VP: {<VB.*>+<NP>*<PP>*<ADV>*}
-    
+    VP: { <VP>+<CONJ>+<VP>+}
     S: {<NP>+<AUX>*<VP>+}
+    S: {<S>+<CONJ><S>+}
 
     """  # TODO: refine the tag pattern grammar
 
-    # NP: { < NP > + < CONJ > < ADV > * < NP > +}
-    # VP: { < VP > + < CONJ > + < VP > +}
-    # S: {<S>+<CONJ><S>+}
+    #
+    #
+    #
 #    PP: {<PP>+<CONJ><PP>+}
 
     chunk_parser = nltk.RegexpParser(np_chunk_grammar, loop=20)  #TODO: if dont want deeper structure, remove cascading loop argument
@@ -84,7 +85,7 @@ def tree():
     # print
 
 # document = u'the little yellow dog barked at the cat when the cat hissed at the dog'
-# document = u'the little yellow dog, rat was killing the cat'
+document = u'the little yellow dog, rat was killing the cat'
 # document = u'Two fish stores closed last week for repairs for christmas break'
 # document = u'He sang a song in the shower badly'
 # document = u'The dog, cat, rabbit and the tiger will eat the bone'
@@ -93,8 +94,8 @@ def tree():
 # document = u'Rapunzel let down her long golden hair'
 # document = u'The stolen goods are mine'
 # document = u'the anticommunist action alliance reports the following to the honduran people, in particular, and to the international community in general'
-document = u'six people were killed and five wounded today in a bomb attack'
-# document = u'six people were killed and five wounded today in a bomb attack that destroyed a peasant home in the town of quinchia, about 300 km west of bogota, in the coffee-growing department of risaralda, quinchia mayor saul botero has reported.'
+# document = u'six people were killed and five wounded today in a bomb attack'
+document = u'six people were killed and five wounded today in a bomb attack that destroyed a peasant home in the town of quinchia, about 300 km west of bogota, in the coffee-growing department of risaralda, quinchia mayor saul botero has reported.'
 tree()
 
 
