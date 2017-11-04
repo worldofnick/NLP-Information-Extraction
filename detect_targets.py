@@ -136,7 +136,27 @@ def detect_targets(article_text, killing_words):
 
             for i in range(0, subject_end_index):
                 tuple = word_pos_tuples[i]
-                if tuple[1] == 'VERB':
-                    break;
+
+                if tuple[1] == 'DET':
+                    continue
+                elif tuple[1] == 'ADJ':
+                    compound_target_name = str(tuple[0])
+                    for j in range(i + 1, subject_end_index):
+                        t = word_pos_tuples[j]
+                        if t[1] == 'NOUN' or t[1] == 'PROPN' or t[1] == 'ADJ':
+                            compound_target_name = compound_target_name + " " + str(t[0])
+                        elif t[1] == 'CCONJ':
+                            j = j + 1
+                        else:
+                            i = j + 1
+                            break
+                    print "Target: " + compound_target_name
+                    targets.append(compound_target_name)
+                    break
+
+                # if tuple[1] == 'VERB':
+                #     break;
+
+
 
 
