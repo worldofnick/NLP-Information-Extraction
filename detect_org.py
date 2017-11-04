@@ -4,7 +4,7 @@ from spacy.en import English
 
 def detect_orgs(text):
     nlp = English()
-    doc = doc = nlp(text)
+    doc = nlp(text)
     orgs = []
     for ent in doc.ents:
         if ent.label_ == 'ORG':

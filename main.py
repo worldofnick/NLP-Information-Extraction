@@ -44,10 +44,14 @@ def main():
 
 
     file = open(ntpath.basename(input_path) + '.templates','w')
+    print ">> Beginning processing"
+    count = 0
     for text in articles:
+        print ">> Processing article " + str(count)
         article = Article(text)
         extracted_info = classify(article, load_text('weapons.txt'), load_text('killingverbs.txt'))
         extracted_info.write_template(file)
+        count += 1
 
     print 'Successfully saved to ' + ntpath.basename(input_path) + '.templates'
 
