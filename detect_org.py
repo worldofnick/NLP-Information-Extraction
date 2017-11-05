@@ -2,6 +2,19 @@ from __future__ import unicode_literals
 import spacy
 import nltk
 from spacy.en import English
+from nltk.tokenize import sent_tokenize, word_tokenize
+
+def detect_org_2(text, common_orgs):
+    sent_tokenize_list = sent_tokenize(text.upper())
+    orgs = set()
+
+    for sentence in sent_tokenize_list:
+        words = word_tokenize(sentence)
+        for common_org in common_orgs:
+            if common_org.upper() in words:
+                orgs.add(common_org)
+
+    return orgs
 
 #TODO: change these common rules (<VBZ><VBN>|<VBP><VBN>|<VBD><VBN>) to corresponding was, were, had, etc
 def is_passive(tagged_sentence):
