@@ -14,7 +14,6 @@ class Article:
         self.trigramDist = trigramDist
         self.wordCasingLookup = wordCasingLookup
         self.cased_text = self.fix_casing(text)
-        print self.cased_text
 
     def fix_casing(self, text):
         cased_text = ''

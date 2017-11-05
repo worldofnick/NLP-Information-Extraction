@@ -62,7 +62,6 @@ def main():
     for text in articles:
         print ">> Processing article " + str(count)
         article = Article(text, uniDist, backwardBiDist, forwardBiDist, trigramDist, wordCasingLookup)
-        break
         extracted_info = classify(article, load_text('weapons.txt'), load_text('killingverbs.txt'), en_nlp)
         extracted_info.write_template(file)
         count += 1
