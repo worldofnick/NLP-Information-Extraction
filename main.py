@@ -7,6 +7,7 @@ import spacy
 from spacy.en import English
 import re
 import ntpath
+import cPickle
 
 ARTICLE_LOCATION = 'developset/texts'
 ANSWER_LOCATION = 'developset/answers'
@@ -46,13 +47,22 @@ def main():
         else:
             articles[currentIndex] = articles[currentIndex] + ' ' + line.strip()
 
-
+    print '>> Loading casing model'
     file = open(ntpath.basename(input_path) + '.templates','w')
+    f = open(os.path.join(os.path.dirname(__file__), 'distributions.obj'))
+    uniDist = cPickle.load(f)
+    backwardBiDist = cPickle.load(f)
+    forwardBiDist = cPickle.load(f)
+    trigramDist = cPickle.load(f)
+    wordCasingLookup = cPickle.load(f)
+    f.close()
+    print '>> Loaded casing model'
     print ">> Beginning processing"
     count = 0
     for text in articles:
         print ">> Processing article " + str(count)
-        article = Article(text)
+        article = Article(text, uniDist, backwardBiDist, forwardBiDist, trigramDist, wordCasingLookup)
+        break
         extracted_info = classify(article, load_text('weapons.txt'), load_text('killingverbs.txt'), en_nlp)
         extracted_info.write_template(file)
         count += 1
