@@ -39,6 +39,10 @@ def main():
     headers = ['DEV-MUC3', 'TST1-MUC3', 'TST2-MUC4']
     articles = []
     currentIndex = -1
+    weapons = load_text('weapons.txt')
+    killingverbs = load_text('killingverbs.txt')
+    orgs = load_text('orgs.txt')
+
 
     for line in lines:
         if is_header(line, headers):
@@ -57,12 +61,13 @@ def main():
     wordCasingLookup = cPickle.load(f)
     f.close()
     print '>> Loaded casing model'
+
     print ">> Beginning processing"
     count = 0
     for text in articles:
         print ">> Processing article " + str(count)
         article = Article(text, uniDist, backwardBiDist, forwardBiDist, trigramDist, wordCasingLookup)
-        extracted_info = classify(article, load_text('weapons.txt'), load_text('killingverbs.txt'), en_nlp)
+        extracted_info = classify(article, weapons, killingverbs, orgs, en_nlp)
         extracted_info.write_template(file)
         count += 1
 
