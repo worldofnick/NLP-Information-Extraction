@@ -51,22 +51,22 @@ def main():
         else:
             articles[currentIndex] = articles[currentIndex] + ' ' + line.strip()
 
-    print '>> Loading casing model'
+    # print '>> Loading casing model'
     file = open(ntpath.basename(input_path) + '.templates','w')
-    f = open(os.path.join(os.path.dirname(__file__), 'distributions.obj'))
-    uniDist = cPickle.load(f)
-    backwardBiDist = cPickle.load(f)
-    forwardBiDist = cPickle.load(f)
-    trigramDist = cPickle.load(f)
-    wordCasingLookup = cPickle.load(f)
-    f.close()
-    print '>> Loaded casing model'
+    # f = open(os.path.join(os.path.dirname(__file__), 'distributions.obj'))
+    # uniDist = cPickle.load(f)
+    # backwardBiDist = cPickle.load(f)
+    # forwardBiDist = cPickle.load(f)
+    # trigramDist = cPickle.load(f)
+    # wordCasingLookup = cPickle.load(f)
+    # f.close()
+    # print '>> Loaded casing model'
 
     print ">> Beginning processing"
     count = 0
     for text in articles:
         print ">> Processing article " + str(count)
-        article = Article(text, uniDist, backwardBiDist, forwardBiDist, trigramDist, wordCasingLookup)
+        article = Article(text)
         extracted_info = classify(article, weapons, killingverbs, orgs, en_nlp)
         extracted_info.write_template(file)
         count += 1

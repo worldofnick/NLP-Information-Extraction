@@ -4,7 +4,7 @@ from Truecaser import *
 import nltk
 
 class Article:
-    def __init__(self, text, uniDist, backwardBiDist, forwardBiDist, trigramDist, wordCasingLookup):
+    def __init__(self, text, uniDist=None, backwardBiDist=None, forwardBiDist=None, trigramDist=None, wordCasingLookup=None):
         self.id = text.split()[0]
         text = text[len(self.id):]
         self.text = text
@@ -13,7 +13,7 @@ class Article:
         self.forwardBiDist = forwardBiDist
         self.trigramDist = trigramDist
         self.wordCasingLookup = wordCasingLookup
-        self.cased_text = self.fix_casing(text)
+        # self.cased_text = self.fix_casing(text)
 
     def fix_casing(self, text):
         cased_text = ''
