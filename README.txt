@@ -2,22 +2,21 @@ A) Resources
 
 NLTK Used for tokenization: (http://www.nltk.org)
 SpaCy Used for NER: (https://spacy.io)
-Truecaser: Used to convert uppercase text to correctly cased text (https://github.com/nreimers/truecaser)
+Truecaser: Used to convert uppercase text to correctly cased text ** NOT CURRENTLY USED (https://github.com/nreimers/truecaser)
 
-B) Time Per article
+B) Time Per Article
 
-Not sure, the entire program can run in under a minute on a MacBook Pro.
+The program can process the entire developer/texts in under a minute on a MacBook Pro.
 
 C) Contributions
 
 Nick Porter:
-File I/O and Data Model Pipeline
+File I/O, Data Model Pipeline, CADE Script
 Text Case Correction
 Incident Classification
 Weapon Detection
 Organization Detection
 Victim Detection
-CADE Script
 
 Ash:
 Organization Detection
