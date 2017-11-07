@@ -11,7 +11,7 @@ The program can process the entire developer/texts in under a minute on a MacBoo
 C) Contributions
 
 Nick Porter:
-File I/O, Data Model Pipeline, CADE Script
+File I/O, Data Pipeline, CADE Script
 Text Case Correction
 Incident Classification
 Weapon Detection
@@ -19,6 +19,7 @@ Organization Detection
 Victim Detection
 
 Ash:
+Data Pipeline
 Organization Detection
 Victim Detection
 Perp Individual Detection
