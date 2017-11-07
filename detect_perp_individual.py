@@ -29,14 +29,14 @@ def check_if_person(article_text, uppercase_perp_name, en_nlp):
     for ent in en_nlp(article_text.title()):
         if ent.text == titled_prep:
             if ent.ent_type_ == 'PERSON':  # TODO: add others? GPE, NORP, etc
-                print "Prep is person"
+                # print "Prep is person"
                 return True
             else:
                 return False
     return False
 
 def detect_individuals(article_text, killing_words, en_nlp):
-    print "========= PREPS =============="
+    # print "========= PREPS =============="
     titlecase_article_text = article_text.lower()
     # nlp = English()
     # doc = nlp(article_text)
@@ -47,7 +47,7 @@ def detect_individuals(article_text, killing_words, en_nlp):
 
     # Process each sentence in the article
     for tokenized_sentence in tokenized_sents:
-        print
+        # print
         pos_tags = []
         tags = []
         current_sentence = []
@@ -69,18 +69,18 @@ def detect_individuals(article_text, killing_words, en_nlp):
         isInfinitive = False
         word_pos_tuples = zip(current_sentence, tags, pos_tags)
 
-        print u'POS tag string  : ' + pos_tag_string
-        print u'POS     string  : ' + tag_string
-        print "Sentence        : " + current_sent_str
-        print "is Passive voice : " + str(isPassive)
+        # print u'POS tag string  : ' + pos_tag_string
+        # print u'POS     string  : ' + tag_string
+        # print "Sentence        : " + current_sent_str
+        # print "is Passive voice : " + str(isPassive)
 
         if "ADP" in tag_string:
             isPreposition = True
-        print "Is Preposition  : " + str(isPreposition)
+        # print "Is Preposition  : " + str(isPreposition)
 
         if "TO" in pos_tag_string:
             isInfinitive = True
-        print "Is Infinitive  : " + str(isInfinitive)
+        # print "Is Infinitive  : " + str(isInfinitive)
 
         if isPassive and isInfinitive:
             subject_end_index = -1;
@@ -134,8 +134,8 @@ def detect_individuals(article_text, killing_words, en_nlp):
                     #             print
                     #         break
                     # break
-            print str(perp_individuals)
-            print
+            # print str(perp_individuals)
+            # print
 
         elif isPassive and isPreposition and not isInfinitive:
 
@@ -191,8 +191,8 @@ def detect_individuals(article_text, killing_words, en_nlp):
                     #             perp_orgs.append(compound_perp_name.upper())
                     #         break
                     # break
-            print str(perp_individuals)
-            print
+            # print str(perp_individuals)
+            # print
 
         elif not isPassive and isInfinitive:
             subject_end_index = -1;
@@ -233,8 +233,8 @@ def detect_individuals(article_text, killing_words, en_nlp):
                             perp_individuals.add(compound_perp_name.upper())
                         compound_perp_name = ""
                         break
-            print str(perp_individuals)
-            print
+            # print str(perp_individuals)
+            # print
 
         # ------------------- down
         elif not isPassive and not isInfinitive and not isPreposition:
@@ -276,12 +276,12 @@ def detect_individuals(article_text, killing_words, en_nlp):
                             perp_individuals.add(compound_perp_name.upper())
                         compound_perp_name = ""
                         break
-            print str(perp_individuals)
-            print
+            # print str(perp_individuals)
+            # print
 
 
 
-    print "========= END =============="
+    # print "========= END =============="
 
     return perp_individuals
 

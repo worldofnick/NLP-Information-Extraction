@@ -57,20 +57,20 @@ def detect_targets(article_text, killing_words, en_nlp):
         word_pos_tuples = zip(current_sentence, tags)
 
 
-        print u'POS tag string  : ' + pos_tag_string
-        print u'POS     string  : ' + tag_string
-        print "Sentence        : " + current_sent_str
-        print "is Passive voice : " + str(isPassive)
+        # print u'POS tag string  : ' + pos_tag_string
+        # print u'POS     string  : ' + tag_string
+        # print "Sentence        : " + current_sent_str
+        # print "is Passive voice : " + str(isPassive)
 
         if "ADP" in tag_string:
             isPreposition = True
-        print "Is Preposition  : " + str(isPreposition)
-        print
+        # print "Is Preposition  : " + str(isPreposition)
+        # print
 
         if "TO" in pos_tag_string:
             isInfinitive = True
-        print "Is Infinitive  : " + str(isInfinitive)
-        print
+        # print "Is Infinitive  : " + str(isInfinitive)
+        # print
 
         # active-vp prep <np> : <target>
         if not isPassive and isPreposition and not isInfinitive:
@@ -90,7 +90,7 @@ def detect_targets(article_text, killing_words, en_nlp):
                         break
 
                 if (tuple[1] == 'NOUN' or tuple[1] == 'PROPN') and prep_index != -1:
-                    print "Target: " + str(tuple[0]).upper()
+                    # print "Target: " + str(tuple[0]).upper()
                     targets.add(str(tuple[0]).upper())
                 elif tuple[1] == 'ADJ' and prep_index != -1:
                     compound_target_name = str(tuple[0])
@@ -108,11 +108,11 @@ def detect_targets(article_text, killing_words, en_nlp):
                         else:
                             i = j+1
                             break
-                    print "Target: " + compound_target_name.upper()
+                    # print "Target: " + compound_target_name.upper()
                     targets.add(compound_target_name.upper())
                     break
 
-            print "-----------------------------"
+            # print "-----------------------------"
 
         elif not isPassive and not isInfinitive:
             print
@@ -139,7 +139,7 @@ def detect_targets(article_text, killing_words, en_nlp):
                         else:
                             i = j+1
                             break
-                    print "Target: " + compound_target_name.upper()
+                    # print "Target: " + compound_target_name.upper()
                     targets.add(compound_target_name.upper())
                     break
 
@@ -172,7 +172,7 @@ def detect_targets(article_text, killing_words, en_nlp):
                         else:
                             i = j + 1
                             break
-                    print "Target: " + compound_target_name.upper()
+                    # print "Target: " + compound_target_name.upper()
                     targets.add(compound_target_name.upper())
                     break
 
